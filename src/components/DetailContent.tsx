@@ -38,30 +38,31 @@ export function DetailContent(props: DetailContentProps) {
         </section>
       </Show>
 
-      <Show when={props.item.id === "education-history"}>
-        <section class="xmb-history-panel" aria-label="Education history">
-          <header><span>History</span><strong>Education</strong></header>
-          <ol>
-            <li class="is-pending">
-              <span aria-hidden="true" />
-              <div>
-                <small>Verified record required</small>
-                <strong>Institution and degree</strong>
-                <p>Institution, concentration, and graduation date will appear here after Nisan supplies a verified record.</p>
-              </div>
-            </li>
-          </ol>
-        </section>
+      <Show when={props.item.education} keyed>
+        {(education) => (
+          <section class="xmb-history-panel" aria-label="Education history">
+            <header><span>Education</span><strong>{education.period}</strong></header>
+            <ol>
+              <li>
+                <span aria-hidden="true" />
+                <div>
+                  <small>{education.detail}</small>
+                  <strong>{education.institution}</strong>
+                  <p>{education.degree}</p>
+                </div>
+              </li>
+            </ol>
+          </section>
+        )}
       </Show>
 
-      <Show when={props.item.id === "coursework" || props.item.id === "certifications"}>
+      <Show when={props.item.id === "coursework"}>
         <section class="xmb-topic-stack" aria-label={props.item.label}>
           <article>
-            <span>{props.item.id === "coursework" ? "Study areas" : "Credentials"}</span>
-            <strong>Verified details pending</strong>
+            <span>Relevant study</span>
+            <strong>Computer Science foundations</strong>
             <p>{props.item.body}</p>
           </article>
-          <div class="xmb-topic-empty">No unverified entries are displayed.</div>
         </section>
       </Show>
 
@@ -109,7 +110,7 @@ export function DetailContent(props: DetailContentProps) {
       </Show>
 
       <Show when={
-        !["profile-summary", "about", "availability", "education-history", "coursework", "certifications"].includes(props.item.id ?? "") &&
+        !["profile-summary", "about", "availability", "education-history", "coursework"].includes(props.item.id ?? "") &&
         !props.item.resume
       }>
         <p>{props.item.body}</p>

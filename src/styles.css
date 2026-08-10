@@ -514,6 +514,7 @@ a {
 
 .xmb-game-library.is-project-1 .xmb-game-list { transform: translateY(calc(-1 * var(--xmb-game-step))); }
 .xmb-game-library.is-project-2 .xmb-game-list { transform: translateY(calc(-2 * var(--xmb-game-step))); }
+.xmb-game-library.is-project-3 .xmb-game-list { transform: translateY(calc(-3 * var(--xmb-game-step))); }
 
 .xmb-game-entry {
   position: absolute;
@@ -540,6 +541,7 @@ a {
 
 .xmb-game-entry:nth-child(2) { transform: translateY(var(--xmb-game-step)); }
 .xmb-game-entry:nth-child(3) { transform: translateY(calc(2 * var(--xmb-game-step))); }
+.xmb-game-entry:nth-child(4) { transform: translateY(calc(3 * var(--xmb-game-step))); }
 
 .xmb-game-entry.is-above {
   opacity: 0.38;
@@ -1277,7 +1279,10 @@ a {
   align-content: start;
   gap: 5px;
   overflow: auto;
+  overscroll-behavior-y: contain;
   scrollbar-width: thin;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 .xmb-custom-color-controls {
@@ -1494,6 +1499,10 @@ a {
   align-content: start;
   gap: 10px;
   overflow: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 .xmb-background-theme-option {
@@ -2405,6 +2414,14 @@ a {
   z-index: 5;
 }
 
+.xmb-blog-view:not([data-reader-open="true"]) {
+  pointer-events: none;
+}
+
+.xmb-blog-view:not([data-reader-open="true"]) .xmb-item:not(.is-hidden) {
+  pointer-events: auto;
+}
+
 .xmb-blog-view[data-reader-open="true"] {
   z-index: 18;
 }
@@ -3163,6 +3180,7 @@ a {
     grid-template-columns: 1fr;
     gap: 14px;
     margin-top: 24px;
+    min-height: 0;
   }
 
   .xmb-theme-menu-item {
@@ -3194,6 +3212,7 @@ a {
     max-height: 56vh;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    overflow-y: auto;
   }
 
   .xmb-background-theme-option {

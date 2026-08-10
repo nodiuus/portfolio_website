@@ -28,13 +28,13 @@ All portfolio data is in:
 - `src/data/media.ts`
 - `src/data/themes.ts`
 
-Replace the visible placeholders with Nisan's verified resume information. Identity values at the top of the file control the display name, site handle, email, and GitHub profile.
+The portfolio is populated from Nisan's supplied software-engineering resume and public GitHub profile. Identity values at the top of the file control the display name, site handle, email, GitHub profile, and LinkedIn profile.
 
-Place the verified resume at `public/resume.pdf`, then add its action to the Resume item.
+The deployable resume is stored at `public/resume.pdf` and linked from the Contact category.
 
 Experience entries use a structured `resume` object with `organization`, `period`, `location`, and concise `highlights`. This keeps role details readable as a résumé instead of presenting one undifferentiated text block.
 
-About uses a timeline-style profile sidebar. Education, Coursework, and Certifications use category-specific history/empty states instead of pretending unverified records exist. Availability uses the supplied Flushing, New York City location, current open-to-work status, software-engineering preference, and broad weekly availability.
+About uses a timeline-style profile sidebar. Education and Coursework use the verified Queens College record. Availability retains broad scheduling windows without claiming exact hours.
 
 ## Availability and booking
 
@@ -48,7 +48,7 @@ When configured, **Continue to 20.com** opens the booking provider in a user-ini
 
 ## Media and music
 
-**Media** lives directly in the main XMB category bar and opens a compact child rail for the four supplied tracks, localized artwork, title, and artist metadata. Opening a track reveals a PS3-inspired player with album-derived accent color, aligned metadata, coverflow, an animated LED visualizer, a centered transport, and progress treatment. Only **A New Kind Of Love** included a verified playback URL in the supplied markup, so its external player is launched only after an explicit click. The remaining tracks display their metadata without fabricated playback sources.
+The media experience remains implemented but is currently hidden from the main XMB category bar. It can be restored later without rebuilding the player.
 
 Localized cover art lives in `public/media/tracks/`.
 
@@ -77,9 +77,10 @@ Projects follow the PSP's nested Game behavior rather than using a free-floating
 ```text
 Game
 └── Project Library
-    ├── Signal Room
-    ├── Pocket Forge
-    └── Dockyard
+    ├── Door Alert System
+    ├── Nocturne
+    ├── Code for All Events API
+    └── NDIF
 ```
 
 Open **Project Library** to reveal the project entries. Each entry supports:
@@ -90,13 +91,12 @@ Open **Project Library** to reveal the project entries. Each entry supports:
 - `completed`: verified completion/addition date
 - `body`, `meta`, and `actions`: technical detail and links
 
-The current `Finished — add date` values are intentional placeholders. Replace them with Nisan's verified dates before publishing.
+Project artwork lives in:
 
-Current placeholder artwork lives in:
-
-- `public/projects/signal-room.svg`
-- `public/projects/pocket-forge.svg`
-- `public/projects/dockyard.svg`
+- `public/projects/door-alert.svg`
+- `public/projects/nocturne.svg`
+- `public/projects/events-api.svg`
+- `public/projects/ndif.svg`
 
 ## Typography and XMB assets
 
@@ -114,7 +114,7 @@ M PLUS 1p—the reference's available fallback—is bundled locally at weights 4
 
 Custom PSP-style child icons include:
 
-- `typescript.svg`, `solidjs.svg`, and `vite.svg` for individual Skills entries
+- custom and PS3 system icons for the grouped Skills entries
 - `email.svg`, `github.svg`, and `pdf.svg` for Contact entries
 
 All visible XMB navigation and detail icons are rendered through one flat white PS3 treatment. TypeScript, SolidJS, and Vite use bordered silhouettes with opacity-based internal separation, so their forms remain distinct after monochrome rendering. Brand geometry remains recognizable, but gradients and mixed metallic fills are removed from the live interface.

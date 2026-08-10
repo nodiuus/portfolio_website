@@ -37,6 +37,9 @@ export function ThemePanel(props: ThemePanelProps) {
 
   createEffect(() => {
     if (!props.open || props.section === "menu" || editingColor()) return;
+    // Track the keyboard cursor explicitly so the scroll follows every Up/Down move.
+    if (props.section === "theme") props.activeBackgroundTheme;
+    if (props.section === "color") props.activeColorMenuIndex;
     const selected = picker?.querySelector<HTMLButtonElement>("[data-nav-active='true'], [aria-selected='true']");
     selected?.scrollIntoView({ block: "nearest" });
   });

@@ -22,8 +22,8 @@ export const availabilityOptions: AvailabilityOption[] = [
 ];
 
 export const candidateProfile = {
-  location: "Flushing, New York City",
-  status: "Currently open to work",
-  preferredRole: "Software engineering",
-  availabilitySummary: "Mostly available throughout the week",
+  location: "New York, NY",
+  status: "CS student · Open to opportunities",
+  preferredRole: "Software engineering · Systems & security",
+  availabilitySummary: "Available to discuss internships and technical opportunities",
 } as const;

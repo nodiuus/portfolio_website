@@ -278,6 +278,7 @@ export function XmbRuntime(props: XmbRuntimeProps) {
               "is-project-0": props.activeDrillItem === 0,
               "is-project-1": props.activeDrillItem === 1,
               "is-project-2": props.activeDrillItem === 2,
+              "is-project-3": props.activeDrillItem === 3,
             }}
             data-child-open={props.childOpen}
             aria-label="Project Library"

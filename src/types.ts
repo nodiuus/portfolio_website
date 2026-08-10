@@ -16,6 +16,12 @@ export type XmbItem = {
   };
   completed?: string;
   children?: XmbItem[];
+  education?: {
+    institution: string;
+    degree: string;
+    period: string;
+    detail: string;
+  };
   resume?: {
     organization: string;
     period: string;

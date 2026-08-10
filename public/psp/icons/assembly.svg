@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="x86 and x64 Assembly" data-icon-style="flat-bordered-ps3">
+  <rect x="10" y="10" width="44" height="44" rx="7" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-width="3"/>
+  <path d="M17 4v6M27 4v6M37 4v6M47 4v6M17 54v6M27 54v6M37 54v6M47 54v6M4 17h6M4 27h6M4 37h6M4 47h6M54 17h6M54 27h6M54 37h6M54 47h6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <text x="32" y="37" fill="#fff" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="middle">ASM</text>
+</svg>

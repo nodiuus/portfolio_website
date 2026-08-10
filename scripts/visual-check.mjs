@@ -54,15 +54,17 @@ check(
     customIconSources[2].includes('M7 11h22') && customIconSources[2].includes('M39 11h22'),
 );
 
-const borderedSkillIconNames = ["typescript", "solidjs", "vite"];
+const borderedSkillIconNames = [
+  "typescript", "solidjs", "vite", "cpp", "lua", "go", "python", "rust", "java", "sql", "assembly",
+];
 const borderedSkillIconSources = await Promise.all(
   borderedSkillIconNames.map((iconName) => readFile(resolve(root, "public", "psp", "icons", `${iconName}.svg`), "utf8")),
 );
 check(
-  "assets: TypeScript SolidJS and Vite use bordered flat silhouettes",
+  "assets: language and framework icons use flat PS3 silhouettes",
   borderedSkillIconSources.every((source) =>
     source.includes('data-icon-style="flat-bordered-ps3"') &&
-      source.includes('stroke="#fff"') &&
+      source.includes("#fff") &&
       !source.includes("linearGradient") &&
       !source.includes("feDropShadow"),
   ),
@@ -1107,6 +1109,14 @@ async function visit(name, viewport) {
         "/psp/icons/typescript.svg",
         "/psp/icons/solidjs.svg",
         "/psp/icons/vite.svg",
+        "/psp/icons/cpp.svg",
+        "/psp/icons/lua.svg",
+        "/psp/icons/go.svg",
+        "/psp/icons/python.svg",
+        "/psp/icons/rust.svg",
+        "/psp/icons/java.svg",
+        "/psp/icons/sql.svg",
+        "/psp/icons/assembly.svg",
         "/psp/icons/ps3/display-settings.png",
         "/psp/icons/ps3/system-settings.png",
       ]) && skillIcons.every((item) => item.loaded),
