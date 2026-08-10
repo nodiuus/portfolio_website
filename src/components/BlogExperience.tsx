@@ -15,12 +15,14 @@ import typescript from "highlight.js/lib/languages/typescript";
 import xml from "highlight.js/lib/languages/xml";
 import { marked } from "marked";
 import { createMemo, For } from "solid-js";
-import type { BlogPost } from "../types";
+import { getControlLabels } from "../controlHints";
+import type { BlogPost, XmbControlScheme } from "../types";
 
 type BlogExperienceProps = {
   posts: BlogPost[];
   activePost: number;
   readerOpen: boolean;
+  controlScheme: XmbControlScheme;
   onPostSelect: (index: number) => void;
   onPostActivate: (index: number) => void;
   onReaderClose: () => void;
@@ -127,6 +129,7 @@ function compileMarkdown(source: string) {
 export function BlogExperience(props: BlogExperienceProps) {
   const selected = () => props.posts[props.activePost] ?? props.posts[0];
   const article = createMemo(() => compileMarkdown(selected().markdown));
+  const controls = () => getControlLabels(props.controlScheme);
 
   return (
     <section class="xmb-blog-view" aria-label="Blog" data-reader-open={props.readerOpen}>
@@ -161,6 +164,9 @@ export function BlogExperience(props: BlogExperienceProps) {
       </section>
 
       <article class="xmb-blog-article" data-open={props.readerOpen} aria-hidden={!props.readerOpen}>
+        <button type="button" class="xmb-panel-close xmb-blog-article-close" aria-label="Close article" onClick={props.onReaderClose}>
+          <span aria-hidden="true">×</span>
+        </button>
         <button type="button" class="xmb-blog-article-back" onClick={props.onReaderClose}>
           <img src="/psp/icons/arrow.svg" alt="" aria-hidden="true" />
           <span>Blog</span>
@@ -208,8 +214,13 @@ export function BlogExperience(props: BlogExperienceProps) {
         </div>
 
         <span class="xmb-blog-article-hint" aria-hidden="true">
-          <span><kbd>Esc</kbd> Back</span>
-          <span><kbd>↑</kbd><kbd>↓</kbd> Scroll</span>
+          <span><kbd>{controls().back}</kbd> Back</span>
+          <span>
+            {props.controlScheme === "keyboard"
+              ? <><kbd>↑</kbd><kbd>↓</kbd></>
+              : <kbd>{controls().move}</kbd>}
+            {" "}Scroll
+          </span>
         </span>
       </article>
     </section>

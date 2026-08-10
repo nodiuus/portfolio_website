@@ -7,7 +7,8 @@ import { blogPosts } from "./data/blog";
 import { musicTracks } from "./data/media";
 import { categories } from "./data/portfolio";
 import { backgroundThemes, defaultBackgroundTheme, defaultTheme, themes } from "./data/themes";
-import type { XmbAction, XmbDirection, XmbSettingsSection, XmbTheme, XmbView } from "./types";
+import { startGamepadControls } from "./gamepad";
+import type { XmbAction, XmbControlScheme, XmbDirection, XmbSettingsSection, XmbTheme, XmbView } from "./types";
 
 const validHexColor = (value: string | null, fallback: string) => /^#[0-9a-f]{6}$/i.test(value ?? "") ? value! : fallback;
 
@@ -79,6 +80,7 @@ function App() {
   const [availabilityIndex, setAvailabilityIndex] = createSignal(0);
   const [bookingOpen, setBookingOpen] = createSignal(false);
   const [soundEnabled, setSoundEnabled] = createSignal(window.localStorage.getItem("nisan-xmb-sound") !== "off");
+  const [controlScheme, setControlScheme] = createSignal<XmbControlScheme>("keyboard");
   const animated = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const selectedCategory = createMemo(() => categories[activeCategory()]);
@@ -114,6 +116,17 @@ function App() {
     const enabled = !soundEnabled();
     setSoundEnabled(enabled);
     if (enabled) window.setTimeout(() => playXmbSound("confirm", true), 0);
+  }
+
+  function changeSelectedHue(direction: -1 | 1, fine = false) {
+    if (!settingsOpen() || (settingsSection() !== "color-primary" && settingsSection() !== "color-secondary")) return;
+    const slot = settingsSection() === "color-primary" ? "primary" : "secondary";
+    const current = slot === "primary" ? customPrimary() : customSecondary();
+    const color = rotateKeyboardHue(current, direction * (fine ? 2 : 8));
+    if (slot === "primary") setCustomPrimary(color);
+    else setCustomSecondary(color);
+    setActiveThemeIndex(themes.length);
+    playSound("move");
   }
 
   function setRoute(path: string, replace = false) {
@@ -472,6 +485,19 @@ function App() {
 
   onMount(() => {
     preloadXmbSounds();
+    const stopGamepadControls = startGamepadControls({
+      navigate,
+      confirm,
+      back,
+      openThemes: () => {
+        playSound("confirm");
+        openSettings();
+      },
+      home,
+      changeHue: changeSelectedHue,
+      onConnect: preloadXmbSounds,
+      onConnectionChange: (scheme) => setControlScheme(scheme ?? "keyboard"),
+    });
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target;
       if (
@@ -500,13 +526,7 @@ function App() {
         navigate(direction[event.key], event.shiftKey);
       } else if (settingsOpen() && (settingsSection() === "color-primary" || settingsSection() === "color-secondary") && ["q", "e"].includes(event.key.toLowerCase())) {
         event.preventDefault();
-        const slot = settingsSection() === "color-primary" ? "primary" : "secondary";
-        const current = slot === "primary" ? customPrimary() : customSecondary();
-        const color = rotateKeyboardHue(current, event.key.toLowerCase() === "e" ? (event.shiftKey ? 2 : 8) : (event.shiftKey ? -2 : -8));
-        if (slot === "primary") setCustomPrimary(color);
-        else setCustomSecondary(color);
-        setActiveThemeIndex(themes.length);
-        playSound("move");
+        changeSelectedHue(event.key.toLowerCase() === "e" ? 1 : -1, event.shiftKey);
       } else if (event.key === "Enter" || event.key.toLowerCase() === "x") {
         event.preventDefault();
         confirm();
@@ -522,6 +542,7 @@ function App() {
     window.addEventListener("popstate", syncRouteFromLocation);
     window.addEventListener("pointerdown", preloadXmbSounds, { once: true });
     onCleanup(() => {
+      stopGamepadControls();
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("popstate", syncRouteFromLocation);
       window.removeEventListener("pointerdown", preloadXmbSounds);
@@ -562,6 +583,7 @@ function App() {
         bookingOpen={bookingOpen()}
         bookingUrl={bookingUrl}
         soundEnabled={soundEnabled()}
+        controlScheme={controlScheme()}
         onSoundToggle={toggleSound}
         onSoundError={() => playSound("error")}
         onViewSelect={(nextView) => {
@@ -626,6 +648,10 @@ function App() {
           playSound("confirm");
           setActiveDrillItem(index);
           window.setTimeout(() => setChildOpen(true), 0);
+        }}
+        onChildPanelClose={() => {
+          playSound("back");
+          setChildOpen(false);
         }}
         onActionSelect={(index) => {
           playSound("move");

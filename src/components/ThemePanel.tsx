@@ -1,7 +1,8 @@
 import { createEffect, For, Show } from "solid-js";
 import PspWave from "../PspWave";
 import ShadertoyTheme from "../ShadertoyTheme";
-import type { XmbBackgroundTheme, XmbSettingsSection, XmbTheme } from "../types";
+import { getControlLabels } from "../controlHints";
+import type { XmbBackgroundTheme, XmbControlScheme, XmbSettingsSection, XmbTheme } from "../types";
 import { KeyboardColorPicker } from "./KeyboardColorPicker";
 
 type ThemePanelProps = {
@@ -16,6 +17,7 @@ type ThemePanelProps = {
   customPrimary: string;
   customSecondary: string;
   animated: boolean;
+  controlScheme: XmbControlScheme;
   onMenuSelect: (index: number) => void;
   onColorMenuSelect: (index: number) => void;
   onSectionChange: (section: XmbSettingsSection) => void;
@@ -33,6 +35,7 @@ export function ThemePanel(props: ThemePanelProps) {
   const colorEnabled = () => selectedBackgroundTheme().supportsColor !== false;
   const editingColor = () => props.section === "color-primary" || props.section === "color-secondary";
   const editingSlot = () => props.section === "color-secondary" ? "secondary" : "primary";
+  const controls = () => getControlLabels(props.controlScheme);
   let picker: HTMLDivElement | undefined;
 
   createEffect(() => {
@@ -62,6 +65,9 @@ export function ThemePanel(props: ThemePanelProps) {
   return (
     <aside class="xmb-theme-panel" data-open={props.open} aria-hidden={!props.open} aria-label="Theme Settings">
       <div class="xmb-theme-panel-inner">
+        <button type="button" class="xmb-panel-close" aria-label="Close theme settings" onClick={props.onClose}>
+          <span aria-hidden="true">×</span>
+        </button>
         <header class="xmb-theme-panel-header">
           <button
             type="button"
@@ -193,19 +199,25 @@ export function ThemePanel(props: ThemePanelProps) {
             <KeyboardColorPicker
               label={editingSlot() === "primary" ? "Primary" : "Secondary"}
               color={editingSlot() === "primary" ? props.customPrimary : props.customSecondary}
+              controlScheme={props.controlScheme}
               onChange={(color) => props.onCustomColorChange(editingSlot(), color)}
             />
           </Show>
         </div>
 
         <footer>
-          <span><kbd class="xmb-control-key">Esc</kbd> Back</span>
+          <span><kbd class="xmb-control-key">{controls().back}</kbd> Back</span>
           <span>
             {props.section === "menu"
-              ? <><kbd class="xmb-control-key">Enter</kbd> Open</>
+              ? <><kbd class="xmb-control-key">{controls().confirm}</kbd> Open</>
               : editingColor()
-                ? <><kbd class="xmb-control-key">Enter</kbd> Done</>
-                : <><kbd class="xmb-control-key">↑</kbd><kbd class="xmb-control-key">↓</kbd> Select {props.section}</>}
+                ? <><kbd class="xmb-control-key">{controls().confirm}</kbd> Done</>
+                : <>
+                    {props.controlScheme === "keyboard"
+                      ? <><kbd class="xmb-control-key">↑</kbd><kbd class="xmb-control-key">↓</kbd></>
+                      : <kbd class="xmb-control-key">{controls().move}</kbd>}
+                    {" "}Select {props.section}
+                  </>}
           </span>
         </footer>
       </div>

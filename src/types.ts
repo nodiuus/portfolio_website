@@ -99,3 +99,4 @@ export type AvailabilityOption = {
 export type XmbView = "portfolio" | "media" | "blog";
 export type XmbDirection = "left" | "right" | "up" | "down";
 export type XmbSettingsSection = "menu" | "theme" | "color" | "color-primary" | "color-secondary";
+export type XmbControlScheme = "keyboard" | "playstation" | "xbox" | "generic";

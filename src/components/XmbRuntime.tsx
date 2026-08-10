@@ -1,7 +1,8 @@
 import { createEffect, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import PspWave from "../PspWave";
 import ShadertoyTheme from "../ShadertoyTheme";
-import type { BlogPost, MusicTrack, ThemePalette, XmbAction, XmbBackgroundTheme, XmbCategory, XmbItem, XmbSettingsSection, XmbTheme, XmbView } from "../types";
+import { getControlLabels } from "../controlHints";
+import type { BlogPost, MusicTrack, ThemePalette, XmbAction, XmbBackgroundTheme, XmbCategory, XmbControlScheme, XmbItem, XmbSettingsSection, XmbTheme, XmbView } from "../types";
 import { BookingModal } from "./BookingModal";
 import { BlogExperience } from "./BlogExperience";
 import { DetailContent } from "./DetailContent";
@@ -56,6 +57,7 @@ type XmbRuntimeProps = {
   bookingOpen: boolean;
   bookingUrl?: string;
   soundEnabled: boolean;
+  controlScheme: XmbControlScheme;
 
   onSoundToggle: () => void;
   onSoundError: () => void;
@@ -73,6 +75,7 @@ type XmbRuntimeProps = {
   onItemActivate: (index: number) => void;
   onDrillItemSelect: (index: number) => void;
   onDrillItemActivate: (index: number) => void;
+  onChildPanelClose: () => void;
   onActionSelect: (index: number) => void;
   onTrackSelect: (index: number) => void;
   onTrackActivate: (index: number) => void;
@@ -90,6 +93,7 @@ export function XmbRuntime(props: XmbRuntimeProps) {
   const [now, setNow] = createSignal(new Date());
   const [lockedThemePalette, setLockedThemePalette] = createSignal<ThemePalette>();
   let timer = 0;
+  const controls = () => getControlLabels(props.controlScheme);
 
   createEffect(() => {
     props.activeBackgroundTheme.id;
@@ -129,6 +133,7 @@ export function XmbRuntime(props: XmbRuntimeProps) {
       data-child-open={props.childOpen}
       data-blog-open={props.blogReaderOpen}
       data-booking-open={props.bookingOpen}
+      data-control-scheme={props.controlScheme}
 
       style={{
         "--theme-accent": chromeAccent(),
@@ -315,6 +320,9 @@ export function XmbRuntime(props: XmbRuntimeProps) {
 
         <aside class="xmb-child-panel" data-open={props.childOpen} aria-hidden={!props.childOpen}>
           <div class="xmb-child-panel-inner">
+            <button type="button" class="xmb-panel-close" aria-label="Close details" onClick={props.onChildPanelClose}>
+              <span aria-hidden="true">×</span>
+            </button>
             <header class="xmb-child-panel-header">
               <img class="xmb-child-panel-arrow" src="/psp/icons/arrow.svg" alt="" aria-hidden="true" />
               <div>
@@ -337,9 +345,9 @@ export function XmbRuntime(props: XmbRuntimeProps) {
             </div>
 
             <footer class="xmb-child-panel-footer">
-              <span><kbd class="xmb-control-key">Esc</kbd> Back</span>
+              <span><kbd class="xmb-control-key">{controls().back}</kbd> Back</span>
               <Show when={props.detailItem.actions?.length || props.detailItem.id === "availability"}>
-                <span><kbd class="xmb-control-key">Enter</kbd> Open</span>
+                <span><kbd class="xmb-control-key">{controls().confirm}</kbd> Open</span>
               </Show>
             </footer>
           </div>
@@ -362,6 +370,7 @@ export function XmbRuntime(props: XmbRuntimeProps) {
           posts={props.posts}
           activePost={props.activePost}
           readerOpen={props.blogReaderOpen}
+          controlScheme={props.controlScheme}
           onPostSelect={props.onPostSelect}
           onPostActivate={props.onPostActivate}
           onReaderClose={props.onBlogReaderClose}
@@ -380,6 +389,7 @@ export function XmbRuntime(props: XmbRuntimeProps) {
         customPrimary={props.customPrimary}
         customSecondary={props.customSecondary}
         animated={props.animated}
+        controlScheme={props.controlScheme}
         onMenuSelect={props.onSettingsMenuSelect}
         onColorMenuSelect={props.onSettingsColorMenuSelect}
         onSectionChange={props.onSettingsSectionChange}
@@ -399,9 +409,14 @@ export function XmbRuntime(props: XmbRuntimeProps) {
       />
 
       <footer class="xmb-footer-hints" aria-hidden="true">
-        <span><kbd class="xmb-control-key">Esc</kbd> Back</span>
-        <span><kbd class="xmb-control-key">Enter</kbd> {props.view === "media" ? "Play" : props.view === "blog" ? "Read" : props.drillOpen ? "Open project" : "Open"}</span>
-        <span><kbd class="xmb-control-key">Ctrl</kbd><b aria-hidden="true">+</b><kbd class="xmb-control-key">↑</kbd> Themes</span>
+        <span><kbd class="xmb-control-key">{controls().back}</kbd> Back</span>
+        <span><kbd class="xmb-control-key">{controls().confirm}</kbd> {props.view === "media" ? "Play" : props.view === "blog" ? "Read" : props.drillOpen ? "Open project" : "Open"}</span>
+        <span>
+          {props.controlScheme === "keyboard"
+            ? <><kbd class="xmb-control-key">Ctrl</kbd><b aria-hidden="true">+</b><kbd class="xmb-control-key">↑</kbd></>
+            : <kbd class="xmb-control-key">{controls().themes}</kbd>}
+          {" "}Themes
+        </span>
       </footer>
     </main>
   );

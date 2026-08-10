@@ -1,14 +1,18 @@
 import { createMemo } from "solid-js";
 import { hexToHsv, hsvToHex } from "../color";
+import { getControlLabels } from "../controlHints";
+import type { XmbControlScheme } from "../types";
 
 type KeyboardColorPickerProps = {
   label: string;
   color: string;
+  controlScheme: XmbControlScheme;
   onChange: (color: string) => void;
 };
 
 export function KeyboardColorPicker(props: KeyboardColorPickerProps) {
   const hsv = createMemo(() => hexToHsv(props.color));
+  const controls = () => getControlLabels(props.controlScheme);
 
   const pickSaturationValue = (event: PointerEvent & { currentTarget: HTMLButtonElement }) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -43,7 +47,9 @@ export function KeyboardColorPicker(props: KeyboardColorPickerProps) {
       <button
         type="button"
         class="xmb-color-sv-field"
-        aria-label="Saturation and brightness. Left and right change saturation; up and down change brightness."
+        aria-label={props.controlScheme === "keyboard"
+          ? "Saturation and brightness. Left and right change saturation; up and down change brightness."
+          : `Saturation and brightness. Use ${controls().move} to adjust.`}
         onPointerDown={pickSaturationValue}
       >
         <span class="xmb-color-sv-marker" />
@@ -54,12 +60,17 @@ export function KeyboardColorPicker(props: KeyboardColorPickerProps) {
         <span>Brightness <b>{Math.round(hsv().value)}%</b></span>
       </div>
 
-      <button type="button" class="xmb-color-hue-strip" aria-label="Hue. Use Q and E to change hue." onPointerDown={pickHue}>
+      <button type="button" class="xmb-color-hue-strip" aria-label={`Hue. Use ${controls().hueDown} and ${controls().hueUp} to change hue.`} onPointerDown={pickHue}>
         <span class="xmb-color-hue-marker" />
       </button>
       <div class="xmb-color-meter-copy" aria-hidden="true"><span>Hue <b>{Math.round(hsv().hue)}°</b></span></div>
 
-      <p><kbd>←</kbd><kbd>→</kbd> Saturation <kbd>↑</kbd><kbd>↓</kbd> Brightness <kbd>Q</kbd><kbd>E</kbd> Hue</p>
+      <p>
+        {props.controlScheme === "keyboard"
+          ? <><kbd>←</kbd><kbd>→</kbd> Saturation <kbd>↑</kbd><kbd>↓</kbd> Brightness</>
+          : <><kbd>{controls().move}</kbd> Saturation / Brightness</>}
+        {" "}<kbd>{controls().hueDown}</kbd><kbd>{controls().hueUp}</kbd> Hue
+      </p>
     </section>
   );
 }

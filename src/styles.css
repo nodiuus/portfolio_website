@@ -683,6 +683,42 @@ a {
   -webkit-backdrop-filter: blur(9px) brightness(0.84) saturate(0.9);
 }
 
+.xmb-panel-close {
+  position: absolute;
+  top: clamp(24px, 3.5vh, 38px);
+  right: clamp(24px, 3vw, 42px);
+  z-index: 10;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.84);
+  background: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  transition: color 140ms ease, background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.xmb-panel-close span {
+  display: block;
+  font-size: 23px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.xmb-panel-close:hover,
+.xmb-panel-close:focus-visible {
+  border-color: rgba(255, 255, 255, 0.52);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.13);
+  outline: 0;
+  transform: scale(1.06);
+}
+
 .xmb-child-panel-header {
   display: flex;
   align-items: center;
@@ -2504,12 +2540,16 @@ a {
 .xmb-blog-article-count {
   position: absolute;
   top: 38px;
-  right: 42px;
+  right: 88px;
   z-index: 2;
   color: rgba(255, 255, 255, 0.58);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 7px rgba(0, 16, 58, 0.7);
+}
+
+.xmb-blog-article-close {
+  position: fixed;
 }
 
 .xmb-blog-article-frame {
@@ -3406,7 +3446,14 @@ a {
 
   .xmb-blog-article-count {
     top: 23px;
-    right: 18px;
+    right: 58px;
+  }
+
+  .xmb-blog-article-close {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
   }
 
   .xmb-blog-article-frame {
