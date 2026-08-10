@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs><linearGradient id="mail-metal" x1="10" y1="14" x2="52" y2="53" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset=".52" stop-color="#D5DDE2"/><stop offset="1" stop-color="#84919B"/></linearGradient></defs>
+  <rect x="8" y="16" width="48" height="38" rx="7" fill="#21486E" fill-opacity=".66" transform="translate(0 2)"/>
+  <rect x="7" y="13" width="50" height="38" rx="7" fill="url(#mail-metal)" stroke="#FFFFFF" stroke-opacity=".78" stroke-width="1.5"/>
+  <path d="m10 18 22 17 22-17" stroke="#526A7C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m10 47 16-14M54 47 38 33" stroke="#FFFFFF" stroke-opacity=".58" stroke-width="2" stroke-linecap="round"/>
+  <path d="m12 17 20 15 20-15" stroke="#F8FBFD" stroke-opacity=".76" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

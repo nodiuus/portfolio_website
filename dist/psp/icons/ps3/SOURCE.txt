@@ -1,0 +1,16 @@
+PS3 Color Icon Pack (White)
+
+Source page:
+http://www.ps3-themes.com/misc/color-icon-pack-9-themes.html
+
+Theme file:
+http://download.ps3-themes.com/downloads/2848-WHITE.p3t
+
+Theme author credited by the source page: RIDER121
+Published: September 12, 2008
+
+The source page describes these as original PS3 icons at their original shapes and sizes, recolored white for firmware 2.40+.
+
+Assets were extracted from the P3T's zlib-compressed GIM payloads and converted to transparent PNG without redrawing the silhouettes.
+
+This directory contains only the subset used by the portfolio interface.

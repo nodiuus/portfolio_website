@@ -1,0 +1,24 @@
+{
+  "name": "nisan-psp-portfolio",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "visual:check": "node scripts/visual-check.mjs"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.13",
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.7",
+    "solid-js": "^1.9.10"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.56.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vite-plugin-solid": "^2.11.8"
+  }
+}

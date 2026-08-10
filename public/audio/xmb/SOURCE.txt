@@ -1,0 +1,19 @@
+PlayStation 3 XMB menu sounds
+
+Requested asset:
+https://sounds.spriters-resource.com/playstation_3/systembios/asset/444617/
+The Sounds Resource lists the pack as submitted by Lolcat on July 18, 2024.
+
+The source site blocked automated archive access with Cloudflare. The matching
+PS3 XMB WAV files were obtained from the community archive linked here:
+https://www.reddit.com/r/PS3/comments/151n7k1/ps3_sounds/
+https://www.mediafire.com/file/oflqryghme7jmhs/PS3sounds.zip/file
+
+Files used by this site:
+- snd_option.wav: menu movement
+- snd_system_ok.wav: open / confirm
+- snd_cancel.wav: back / close
+- snd_system_ng.wav: invalid action
+
+These audio files originate from the PlayStation 3 system software. Confirm
+that your intended deployment and distribution comply with applicable rights.
