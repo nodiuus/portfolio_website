@@ -15,6 +15,8 @@ Below is an example of some C++ that's being rendered by markdown.
 
 ![Original entry point in x64dbg](/blog/Screenshot.png)
 
+*The entropy is really high because of the compression (another telltale sign that a binary's section has been packed)*
+
 # THIS IS A TEST
 
 ```cpp

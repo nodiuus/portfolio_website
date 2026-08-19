@@ -2889,6 +2889,18 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.xmb-markdown p:has(> img:only-child) {
+  margin-bottom: 4px;
+}
+
+.xmb-markdown p:has(> img:only-child) + p:has(> em:only-child) {
+  margin-top: 0;
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .xmb-markdown hr {
   margin: 48px 0;
   border: 0;
