@@ -1,6 +1,6 @@
 ---
 title: test
-summary: whatdafuck
+summary: ok
 published: August 9, 2026
 readTime: 3 min read
 category: whatever, dude
