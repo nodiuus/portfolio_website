@@ -13,7 +13,7 @@ order: 4
 
 Below is an example of some C++ that's being rendered by markdown.
 
-![Original entry point in x64dbg](/images/Screenshot 2026-08-18 223300.png)
+![Original entry point in x64dbg](/images/Screenshot.png)
 
 ```cpp
 #include <iostream>
