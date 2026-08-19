@@ -118,7 +118,7 @@ GFM tables, including column alignment:
 
 A lone image in its own paragraph, followed by a paragraph containing only italic text, is styled as a figure with a caption:
 
-![Old website photo](/blog/old_website.png)
+![Old website photo](/media/blog/old_website.png)
 
 *The previous version of this site, kept around for posterity.*
 

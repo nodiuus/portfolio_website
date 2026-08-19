@@ -20,7 +20,7 @@ Even now, the XMB still feels modern in a way that a lot of newer interfaces don
 
 Just putting this here because it's kind of funny to look back at. This is what the website used to look like:
 
-![Old website photo](/blog/old_website.png)
+![Old website photo](/media/blog/old_website.png)
 
 *I can't believe it's almost been two years since I bought this domain.*
 
