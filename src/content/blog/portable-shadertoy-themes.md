@@ -20,8 +20,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(uv, 0.5 + 0.5 * sin(iTime), 1.0);
 }
 ```
-*The entropy is really high because of the compression (another telltale sign that a binary's section has been packed)*
-
 
 The loader wraps `mainImage`, translates compatible texture calls for WebGL 1, and enables standard derivatives when a shader uses functions such as `fwidth`.
 
