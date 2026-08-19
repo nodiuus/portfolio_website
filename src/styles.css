@@ -2685,6 +2685,17 @@ a {
   transition: color 140ms ease, border-color 140ms ease, background 140ms ease, transform 140ms ease;
 }
 
+.xmb-blog-toc a[data-depth="1"] {
+  padding-left: 0;
+  border-left: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+
+.xmb-blog-toc a[data-depth="1"]:not(:first-child) {
+  margin-top: 10px;
+}
+
 .xmb-blog-toc a[data-depth="3"] {
   padding-left: 22px;
   font-size: 11px;
@@ -2714,6 +2725,7 @@ a {
   margin: 0 0 26px;
 }
 
+.xmb-markdown h1,
 .xmb-markdown h2,
 .xmb-markdown h3 {
   scroll-margin-top: 42px;
@@ -2721,6 +2733,11 @@ a {
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-shadow: 0 2px 8px rgba(0, 18, 62, 0.56);
+}
+
+.xmb-markdown h1 {
+  margin: 60px 0 26px;
+  font-size: 31px;
 }
 
 .xmb-markdown h2 {
@@ -3531,6 +3548,11 @@ a {
 
   .xmb-markdown p {
     margin-bottom: 22px;
+  }
+
+  .xmb-markdown h1 {
+    margin-top: 50px;
+    font-size: 27px;
   }
 
   .xmb-markdown h2 {

@@ -277,7 +277,7 @@ export const categories: XmbCategory[] = [
         label: "linkedin.com/in/nisan-shaulov",
         description: "Professional profile",
         body: "View Nisan's LinkedIn profile.",
-        icon: icon("web"),
+        icon: icon("linkedin"),
         actions: [{ label: "Open LinkedIn", href: portfolioIdentity.linkedin }],
       },
       {

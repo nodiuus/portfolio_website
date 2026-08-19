@@ -85,14 +85,16 @@ function compileMarkdown(source: string) {
   const headings: ArticleHeading[] = [];
   const seen = new Map<string, number>();
 
-  document.querySelectorAll("h2, h3").forEach((heading) => {
+  const depthByTag: Record<string, number> = { H1: 1, H2: 2, H3: 3 };
+
+  document.querySelectorAll("h1, h2, h3").forEach((heading) => {
     const label = heading.textContent?.trim() ?? "Section";
     const base = slugify(label) || "section";
     const count = seen.get(base) ?? 0;
     seen.set(base, count + 1);
     const id = count ? `${base}-${count + 1}` : base;
     heading.id = id;
-    headings.push({ id, label, depth: heading.tagName === "H3" ? 3 : 2 });
+    headings.push({ id, label, depth: depthByTag[heading.tagName] ?? 2 });
   });
 
   document.querySelectorAll("a").forEach((link) => {
