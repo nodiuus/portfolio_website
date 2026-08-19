@@ -22,8 +22,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 ```
 
 The loader wraps `mainImage`, translates compatible texture calls for WebGL 1, and enables standard derivatives when a shader uses functions such as `fwidth`.
-*NOTE: idk what shoudl be herEe2*
 
+*The entropy is really high because of the compression (another telltale sign that a binary's section has been packed)*
 
 ## Supporting Multiple Buffers
 
