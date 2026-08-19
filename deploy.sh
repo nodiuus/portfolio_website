@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 set -e
 
@@ -11,7 +11,7 @@ docker build -t portfolio .
 echo "Starting container..."
 docker run -d \
 	--name portfolio \
-		-p 80:80 \
-			portfolio
+	-p 80:80 \
+	portfolio
 
-			echo "Deployment complete."
+echo "Deployment complete."
