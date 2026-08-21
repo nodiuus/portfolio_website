@@ -288,9 +288,7 @@ function App() {
     if (view() === "media") {
       if (musicPlayerOpen()) return;
       if (direction === "up" || direction === "down") {
-        const maximum = musicTracks.length - 1;
-        const offset = direction === "down" ? 1 : -1;
-        setActiveTrack((index) => Math.min(maximum, Math.max(0, index + offset)));
+        setActiveTrack((index) => cycle(index, direction === "down" ? 1 : -1, musicTracks.length));
       } else if (direction === "left") jumpTo(categories.length - 1);
       else if (direction === "right") selectView("blog");
       return;
@@ -308,9 +306,7 @@ function App() {
         return;
       }
       if (direction === "up" || direction === "down") {
-        const maximum = blogPosts.length - 1;
-        const offset = direction === "down" ? 1 : -1;
-        setActivePost((index) => Math.min(maximum, Math.max(0, index + offset)));
+        setActivePost((index) => cycle(index, direction === "down" ? 1 : -1, blogPosts.length));
       } else if (direction === "left") jumpTo(categories.length - 1);
       else if (direction === "right") jumpTo(0);
       return;
@@ -338,9 +334,7 @@ function App() {
         return;
       }
       if (direction === "up" || direction === "down") {
-        const maximum = drillItems().length - 1;
-        const offset = direction === "down" ? 1 : -1;
-        setActiveDrillItem((index) => Math.min(maximum, Math.max(0, index + offset)));
+        setActiveDrillItem((index) => cycle(index, direction === "down" ? 1 : -1, drillItems().length));
         setActiveAction(0);
       }
       return;
@@ -354,9 +348,7 @@ function App() {
       return;
     }
 
-    const maximum = selectedCategory().items.length - 1;
-    const offset = direction === "down" ? 1 : -1;
-    setActiveItem((index) => Math.min(maximum, Math.max(0, index + offset)));
+    setActiveItem((index) => cycle(index, direction === "down" ? 1 : -1, selectedCategory().items.length));
     setActiveAction(0);
   }
 
@@ -541,11 +533,75 @@ function App() {
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("popstate", syncRouteFromLocation);
     window.addEventListener("pointerdown", preloadXmbSounds, { once: true });
+
+    // Firefox reports wheel deltas in "lines" (~3 per notch) while Chrome reports
+    // pixels (~100 per notch); scale both onto a comparable pixel-ish axis.
+    const wheelPixels = (event: WheelEvent) => {
+      const scale = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      return { x: event.deltaX * scale, y: event.deltaY * scale };
+    };
+
+    function scrollableAncestor(node: EventTarget | null, deltaX: number, deltaY: number) {
+      let el = node instanceof Element ? node : null;
+      while (el && el !== document.body) {
+        const style = getComputedStyle(el);
+        if (/(auto|scroll)/.test(style.overflowY) && el.scrollHeight > el.clientHeight && Math.abs(deltaY) >= Math.abs(deltaX)) {
+          const atTop = el.scrollTop <= 0;
+          const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+          if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) return true;
+        }
+        if (/(auto|scroll)/.test(style.overflowX) && el.scrollWidth > el.clientWidth && Math.abs(deltaX) > Math.abs(deltaY)) {
+          const atStart = el.scrollLeft <= 0;
+          const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+          if ((deltaX < 0 && !atStart) || (deltaX > 0 && !atEnd)) return true;
+        }
+        el = el.parentElement;
+      }
+      return false;
+    }
+
+    // ~1 physical mouse-notch in Chrome's pixel-mode delta. No time-based cooldown:
+    // rate is governed purely by how much delta arrives, so spinning the wheel hard
+    // fires steps back-to-back instead of being capped at a fixed pace.
+    const WHEEL_STEP_SIZE = 100;
+    const WHEEL_MAX_STEPS_PER_EVENT = 5;
+    let wheelAccumX = 0;
+    let wheelAccumY = 0;
+
+    const onWheel = (event: WheelEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
+      ) return;
+
+      const { x: deltaX, y: deltaY } = wheelPixels(event);
+      if (scrollableAncestor(event.target, deltaX, deltaY)) return;
+
+      event.preventDefault();
+      wheelAccumX += deltaX;
+      wheelAccumY += deltaY;
+
+      const horizontal = Math.abs(wheelAccumX) > Math.abs(wheelAccumY);
+      const magnitude = horizontal ? wheelAccumX : wheelAccumY;
+      const steps = Math.min(Math.trunc(Math.abs(magnitude) / WHEEL_STEP_SIZE), WHEEL_MAX_STEPS_PER_EVENT);
+      if (steps === 0) return;
+
+      wheelAccumX = 0;
+      wheelAccumY = 0;
+      const direction: XmbDirection = horizontal
+        ? magnitude > 0 ? "right" : "left"
+        : magnitude > 0 ? "down" : "up";
+      for (let i = 0; i < steps; i++) navigate(direction, event.shiftKey);
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+
     onCleanup(() => {
       stopGamepadControls();
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("popstate", syncRouteFromLocation);
       window.removeEventListener("pointerdown", preloadXmbSounds);
+      window.removeEventListener("wheel", onWheel);
     });
   });
 
