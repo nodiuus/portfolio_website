@@ -96,7 +96,7 @@ export const categories: XmbCategory[] = [
         icon: ps3Icon("settings"),
         resume: {
           organization: "YorkMG",
-          period: "June 2025 — August 2025",
+          period: "June 2023 — August 2025",
           location: "New York, NY",
           highlights: [
             "Developed a real-time door alert system monitoring 100+ patients with event-driven tracking and centralized logging.",
@@ -125,7 +125,7 @@ export const categories: XmbCategory[] = [
             body: "A Flask and MySQL monitoring system that parses DXAccess events, tracks RFID card activity for 100+ patients, and alerts staff to unauthorized exits in real time.",
             kind: "game",
             art: { src: "/projects/door-alert.svg", alt: "Door Alert System monitoring interface artwork" },
-            completed: "Deployed · 2025",
+            completed: "Deployed · 2023",
             meta: ["Python", "Flask", "MySQL", "Docker", "RFID", "DXAccess"],
             actions: [{ label: "GitHub", href: "https://github.com/nodiuus/door-alert-system" }],
           },
